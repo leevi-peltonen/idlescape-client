@@ -1,6 +1,7 @@
 # Idlescape
 
 Client for Idlescape -game
+Requires Idlescape server to work
 
 ```
 npm install
