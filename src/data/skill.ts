@@ -1,0 +1,23 @@
+export const SKILL_ID_MAP = {
+    "Woodcutting": 1,
+    "Mining": 2,
+    "Smithing": 3,
+    "Fishing": 4,
+    "Cooking": 5,
+    "Firemaking": 6,
+    "Crafting": 7,
+    "Fletching": 8,
+    "Herblore": 9,
+    "Agility": 10,
+    "Thieving": 11,
+    "Slayer": 12,
+    "Farming": 13,
+    "Runecrafting": 14,
+    "Hunter": 15,
+    "Construction": 16,
+    "Summoning": 17,
+    "Dungeoneering": 18,
+    "Divination": 19,
+    "Invention": 20,
+    "Archaeology": 21
+}
