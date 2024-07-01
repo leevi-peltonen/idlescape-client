@@ -7,9 +7,7 @@ import { DndProvider } from "react-dnd"
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useSelector } from "react-redux"
 import { RootState } from "../../store"
-import { getCharacterItems, getInventoryItems, updateInventoryItemSlot } from "../../services/api"
 import { updateInventoryItemSlotAsync } from "../../features/player/playerSlice"
-import useUpdateEffect from "../../hooks/useUpdateEffect"
 import { useAppDispatch } from "../../hooks/useRedux"
 
 
@@ -103,7 +101,7 @@ const BankPage = () => {
                             item={slot?.item}
                             inventoryItem={slot?.inventoryItem}
                             onDropItem={handleDropItem}
-                            itemLogo={<>Test</>}
+                            itemLogo={<></>}
                         />
                     ))}
                 </SimpleGrid>
