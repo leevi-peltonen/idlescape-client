@@ -1,13 +1,9 @@
 # Idlescape
 
 Client for Idlescape -game
-Requires Idlescape server to work
-
-```
-npm install
-npm run dev
-```
 
 ## Screenshots
 
-![Woodcutting](/screenshots/idlescape_woodcutting.png)
+![Skill_Showcase](/screenshots/idlescape_1.png)
+
+![Skill_Showcase_Passives](/screenshots/idlescape_2.png)
