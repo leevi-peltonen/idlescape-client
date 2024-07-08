@@ -14,6 +14,7 @@ import CharacterSelectionPage from './pages/CharacterSelection/CharacterSelectio
 import CharactersProtectedRoute from './components/CharactersProtectedRoute/CharactersProtectedRoute'
 import ShopPage from './pages/Shop/ShopPage'
 import CombatPage from './pages/Combat/CombatPage'
+import SettingsPage from './pages/Settings/SettingsPage'
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
                         <Route path="/bank" element={<BankPage />} />
                         <Route path="/combat" element={<CombatPage />} />
                         <Route path="/skills/:skill" element={<SkillsMainPage  />} />
+                        <Route path="/settings" element={<SettingsPage />} />
                         <Route path="/initialize" element={<AdminPage/>} />
                     </Route>
                 </Route>
