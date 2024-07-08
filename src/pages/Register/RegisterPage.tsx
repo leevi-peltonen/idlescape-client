@@ -17,8 +17,8 @@ const RegisterPage = () => {
 
     const handleRegister = async () => {
         try {
-            const res = await registerUser(form.values)
-
+            const res = await registerUser(form.values.username, form.values.password)
+            console.log(res.data)
             if(res.data.access_token) {
                 navigate('/login')
                 notifications.show({

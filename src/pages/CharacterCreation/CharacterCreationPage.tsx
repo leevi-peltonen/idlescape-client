@@ -1,14 +1,14 @@
 import { Button, TextInput } from "@mantine/core"
 import { Form, useForm } from "@mantine/form"
 import { useState } from "react"
-import { createCharacter } from "../../services/api"
 import { useSelector } from "react-redux"
 import { RootState } from "../../store"
+import { createCharacter } from "../../services/api"
 
 
 const CharacterCreationPage = () => {
 
-    const { userData } = useSelector((state: RootState) => state.user)
+    //const { userData } = useSelector((state: RootState) => state.user)
 
     const form = useForm({
         initialValues: {
@@ -17,13 +17,8 @@ const CharacterCreationPage = () => {
     })
 
     const handleCreateCharacter = async () => {
-        const response = await createCharacter(form.values.characterName, userData?.id || 0)
-        if(response.status === 201) {
-            // Redirect to character page
-        }
-        else {
-            // Show error message
-        }
+        const response = await createCharacter(form.values.characterName)
+        console.log(response)
     }
     
 

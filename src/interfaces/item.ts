@@ -7,22 +7,23 @@ export enum ItemType {
     Material = 'Material',
 }
 
-export interface InventoryItem {
-    id: number
-    item: Item
-    quantity: number
-    slot: number
+export interface Recipe {
+    result: Item
+    pattern: (Item | null)[][]
 }
 
 
 export interface Item {
 
-    id: number
-
     /**
-     * The name of the item. This is how the item will be displayed in the game
+     * The name of the item. This is the unique identifier for the item
      */
     name: string
+
+    /**
+     * The label of the item. This is the human-readable name of the item
+     */
+    label: string
 
     /**
      * The type of item. This determines how the item can be used and what bonuses it provides
@@ -44,9 +45,19 @@ export interface Item {
     stackable: boolean
 
     /**
+     * Item names that are required to craft this item
+     */
+    recipe?: string[]
+
+    /**
+     * This is a list of items that can be obtained by disassembling the item
+     */
+    disassembleResult?: { item: string, quantity: number, chance: number }[]
+
+    /**
      * The level required to use the item
      */
-    levelRequirement: number
+    levelRequirement?: number
 
     /**
      * The base damage of the item. Only applies to weapons

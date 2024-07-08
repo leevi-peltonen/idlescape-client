@@ -13,6 +13,7 @@ import CharacterCreationPage from './pages/CharacterCreation/CharacterCreationPa
 import CharacterSelectionPage from './pages/CharacterSelection/CharacterSelectionPage'
 import CharactersProtectedRoute from './components/CharactersProtectedRoute/CharactersProtectedRoute'
 import ShopPage from './pages/Shop/ShopPage'
+import CombatPage from './pages/Combat/CombatPage'
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
                     <Route element={<CharactersProtectedRoute />}>
                         <Route path="/shop" element={<ShopPage />} />
                         <Route path="/bank" element={<BankPage />} />
+                        <Route path="/combat" element={<CombatPage />} />
                         <Route path="/skills/:skill" element={<SkillsMainPage  />} />
                         <Route path="/initialize" element={<AdminPage/>} />
                     </Route>

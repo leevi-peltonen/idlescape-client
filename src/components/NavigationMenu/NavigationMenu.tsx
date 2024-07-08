@@ -1,15 +1,15 @@
 import { Box, NavLink } from "@mantine/core"
 import { Link, useLocation } from "react-router-dom"
 import NavigationTab from "../NavigationTab/NavigationTab"
-import { SKILL_ID_MAP } from "../../data/skill"
-import { getSkillData } from "../../utilities/utilities"
 import { useAppSelector } from "../../hooks/useRedux"
 
 import './NavigationMenu.css'
+import { Skill } from "../../interfaces/skill"
 
 interface Tab {
     label: string
     path: string
+    skill?: Skill
 }
 interface NavigationMenuProps {
     tabs: Tab[]
@@ -21,7 +21,7 @@ interface SkillIdMap {
 
 const NavigationMenu = ({ tabs }: NavigationMenuProps) => {
     
-    const { playerSkills } = useAppSelector(state => state.player)
+    //const { playerSkills } = useAppSelector(state => state.player)
 
     return (
         <Box
@@ -30,17 +30,17 @@ const NavigationMenu = ({ tabs }: NavigationMenuProps) => {
             {tabs.map((tab, index) => {
                 if(!tab.label) {
                     
-                    return <div key={index} style={{height: 1, backgroundColor: 'white', margin: 10}} />
+                    return <div key={index} style={{height: 3, margin: 10}}/>
                 }
                 
-                if((SKILL_ID_MAP as SkillIdMap)[tab.label]) {
-                    const skillData = getSkillData(playerSkills, tab.label)
+                if(tab.skill) {
+                    //const skillData = getSkillData(playerSkills, tab.label)
                     return (
                         <NavigationTab
                             path={tab.path}
                             label={tab.label}
                             key={tab.path}
-                            playerSkill={skillData}
+                            playerSkill={tab.skill}
                         />
                     )
                 }

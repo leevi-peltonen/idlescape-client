@@ -1,38 +1,37 @@
 import { RootState } from "../../store"
-import { Text, Progress, Box } from "@mantine/core"
+import { Text, Progress, Box, Card, Image, Group, Badge, Button, ActionIcon } from "@mantine/core"
 import { useState, useEffect, useRef } from "react"
 import toast from "react-hot-toast"
 import { useAppDispatch, useAppSelector } from "../../hooks/useRedux"
-import { addItemToInventoryAsync, addSkillXpAsync } from "../../features/player/playerSlice"
-
+import { ActionDefinition, actionDefinitions } from "../../game/actions"
+import { gainXP, stopAction } from "../../features/game/gameSlice"
+import { GiStoneBlock } from "react-icons/gi"
+import './ActionBox.css'
 
 const ActionBox = () => {
 
-    const { isActive, actionName, actionDuration, items, resource, skillId } = useAppSelector((state: RootState) => state.action)
-    const { activePlayer } = useAppSelector((state: RootState) => state.player)
+    const { action } = useAppSelector((state: RootState) => state.game)
     const [progress, setProgress] = useState(0)
     const intervalRef = useRef<number | null>(null)
     const dispatch = useAppDispatch()
-    const handleActionSuccess = () => {
-        if (!activePlayer || !activePlayer.inventory || !resource || !items || !skillId) {
-            return
-        }
-        items?.forEach(async (item) => {
-            dispatch(addItemToInventoryAsync({inventoryId: activePlayer.inventory.id, itemId: item.id, quantity: 1}))
-            dispatch(addSkillXpAsync({skillId: skillId, xp: resource.experience, playerId: activePlayer.id}))
-            toast.success(`+1 ${item.name}, +${resource.experience} XP`)
-        })
 
+    const handleActionSuccess = () => {
+        if(action) {
+            dispatch(gainXP({skill: action.actionData.skill, xp: action.actionData.xp}))
+        }
     }
+
+    const skillData = useAppSelector(state => state.game.game?.skills[action?.actionData.skill as string])
+
     
 
     useEffect(() => {
 
-        if (isActive) {
+        if (action?.status === 'in-progress') {
             let startTime = Date.now();
             intervalRef.current = window.setInterval(() => {
                 const elapsedTime = (Date.now() - startTime) / 1000; // convert to seconds
-                const progressPercentage = (elapsedTime / actionDuration) * 100;
+                const progressPercentage = (elapsedTime / action.actionData.duration) * 100;
                 setProgress(progressPercentage);
                 if (progressPercentage >= 100) {
                     handleActionSuccess()
@@ -53,21 +52,65 @@ const ActionBox = () => {
                 clearInterval(intervalRef.current);
             }
         };
-      }, [isActive, actionDuration]);
+      }, [action?.status, action?.actionData.duration]);
 
-    if (!isActive) {
+
+
+    if(!action) {
         return (
             <Text> No action in progress </Text>
         )
     }
 
+
     return (
-        <Box>
-            <Progress value={progress} transitionDuration={1}/>
-            <Text>{actionName}</Text>
-        </Box>
-        
+        <>
+
+        {action.status === 'in-progress' ?
+            <Box>
+                <Card withBorder radius="md" p="md" className='badge'>
+                    <Card.Section className="section" mt="md">
+                        
+                        <Text fz="lg" fw={500}>
+                            {action.actionData.label}
+                        </Text>
+
+                       
+                        <Badge size="sm" variant="light">
+                            {action.actionData.duration} seconds
+                        </Badge>
+                    </Card.Section>
+                
+                    <Card.Section className="section">
+                        <Text mt="md" className="label" c="dimmed">
+                            
+                        </Text>
+                        <Group gap={7} mt={5}>
+                            <Badge variant="light">
+                                {skillData?.name}
+                            </Badge>
+                            <Badge variant="light">
+                                {skillData?.category} Skill
+                            </Badge>
+
+                        </Group>
+                    </Card.Section>
+                    <Progress value={progress} transitionDuration={1}/>
+                    <Group mt="xs">
+                        <Button radius="md" style={{ flex: 1 }} onClick={() => dispatch(stopAction())}>
+                            Stop Action
+                        </Button>
+                    </Group>
+                </Card>
+                
+                
+            </Box> :
+            <Text> No Action In Progress </Text>
+        }   
+        </>
     )
 }
+
+
 
 export default ActionBox

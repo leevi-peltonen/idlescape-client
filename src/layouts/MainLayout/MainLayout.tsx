@@ -1,86 +1,47 @@
-import { AppShell, Box, Center, CheckIcon, Group, Text } from "@mantine/core";
+import { AppShell, Box, Group, Text } from "@mantine/core";
 import NavigationMenu from "../../components/NavigationMenu/NavigationMenu";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../store";
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import { Outlet } from "react-router-dom";
 import ActionBox from "../../components/ActionBox/ActionBox";
 import { useEffect, useState } from "react";
-import { getSkills, getUserData } from "../../services/api";
-import { setUserData } from "../../features/user/userSlice";
 import { setCredentials } from "../../features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
+import { authenticatedTabsInitial, noPlayerTabs, unauthenticatedTabs } from "../../data/menu";
+import { Skill } from "../../interfaces/skill";
+import SaveButton from "../../components/SaveButton/SaveButton";
 
 
 
 
 
 const MainLayout = () => {
-    const [skills, setSkills] = useState([])
-    const {activePlayer: player, playerSkills} = useSelector((state: RootState) => state.player)
-    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated)
-    const userData = useSelector((state: RootState) => state.user.userData)
     
-
-    const dispatch = useDispatch()
-
+    const [authenticatedTabs, setAuthenticatedTabs] = useState(authenticatedTabsInitial([]))
+    const { gameState, isAuthenticated } = useAppSelector(state => ({gameState: state.game, isAuthenticated: state.auth.isAuthenticated }))
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
-
-        const handleGetSkills = async () => {
-            const response = await getSkills()
-            
-            setSkills(response.data.map((skill: any) => skill.name))
-        }
-
-        const handleGetUserData = async () => {
-            const response = await getUserData()
-            dispatch(setCredentials({accessToken: localStorage.getItem('token') || ''}))
-            dispatch(setUserData(response.data))
-            console.log(response.data)
-        }
-
-        handleGetSkills()
-
-        if(localStorage.getItem('token')) {
-            handleGetUserData()
-        }
-
+        const token = localStorage.getItem('token')
+        if(!token) return
+        dispatch(setCredentials({accessToken: token}))
     }, [])
 
     useEffect(() => {
-        console.log('MAIN LAYOUT', playerSkills)
-    }, [playerSkills])
+        if(!gameState.game || !isAuthenticated) return
+        const skillsArray = Object.values(gameState.game?.skills || {})
 
-    const authenticatedTabs = [
-        {
-            label: 'Shop',
-            path: '/shop'
-        },
-        {
-            label: 'Bank',
-            path: '/bank'
-        },
-        {
-            label: '',
-            path: ''
-        },
-        ...skills.map(skill => ({label: skill, path: `/skills/${skill}`})),
-        {label: '', path: ''},
-        {label: 'Settings', path: '/settings'},
-        {label: '', path: ''},
-        {label: 'Initialize', path: '/initialize'},
-    ]
+        setAuthenticatedTabs(authenticatedTabsInitial(
+            skillsArray.map((skill: Skill) => {
+                return {
+                    label: skill.name,
+                    path: skill.name ? `/skills/${skill.name.replace(' ', '')}`: '',
+                    skill: skill
+                }
+            }
+        )))
+    }, [gameState.game])
 
-    const unauthenticatedTabs = [
-        {label: 'Home', path: '/'},
-        {label: 'Login', path: '/login'},
-        {label: 'Register', path: '/register'}
-    ]
 
-    const noPlayerTabs = [
-        {label: 'Create Character', path: '/create'},
-        {label: 'Select Character', path: '/select'}
-    ]
     return (
         <AppShell
             header={{height: 60}}
@@ -124,17 +85,22 @@ const MainLayout = () => {
                     </Box>
                     <Box>
                         {
-                            isAuthenticated && player && player.id !== 0 && <Text>{player.characterName}: {player.level}</Text>
+                            isAuthenticated && gameState.game && <Text>{gameState.game.characterName}</Text>
                         }
                     </Box>
                     <Box>
                         {
-                            isAuthenticated && player && player.id !== 0 && <Text>Gold: {player.gold}</Text>
+                            isAuthenticated && gameState.game && <Text>Gold: {gameState.game.gold}</Text>
                         }
                     </Box>
                     <Box>
                     {
-                        isAuthenticated && <LogoutButton />
+
+                        isAuthenticated && 
+                        <Box style={{display:'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', width:"250px"}}>
+                            {gameState.game ? <SaveButton /> : <div></div>}
+                            <LogoutButton />
+                        </Box>
                     }
                     </Box>
 
@@ -145,21 +111,21 @@ const MainLayout = () => {
                 <NavigationMenu 
                     tabs={
                         isAuthenticated ? 
-                        (userData && player && player.id !== 0 ? authenticatedTabs : noPlayerTabs)
+                        (gameState.game ? authenticatedTabs : noPlayerTabs)
                         : unauthenticatedTabs
                     }
                 />
             </AppShell.Navbar>
 
 
-            <AppShell.Main>
-                <Center style={{marginTop: 10}}>
+            <AppShell.Main style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                
                     <Outlet />
-                </Center>
+                
                 
             </AppShell.Main>
-            { isAuthenticated && player && player.id !== 0 &&
-                <AppShell.Aside>
+            { isAuthenticated && gameState.game &&
+                <AppShell.Aside style={{display: 'flex', justifyContent: 'center'}}>
                     <ActionBox /> 
                 </AppShell.Aside>
             }

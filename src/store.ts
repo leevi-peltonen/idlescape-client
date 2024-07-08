@@ -2,14 +2,16 @@ import { configureStore } from "@reduxjs/toolkit"
 import authReducer from "./features/auth/authSlice"
 import userReducer from "./features/user/userSlice"
 import actionReducer from "./features/action/actionSlice"
-import playerReducer from "./features/player/playerSlice"
+import gameReducer from "./features/game/gameSlice"
+import craftingReducer from "./features/crafting/craftingSlice"
 
 const store = configureStore({
     reducer: {
         auth: authReducer,
         user: userReducer,
         action: actionReducer,
-        player: playerReducer
+        game: gameReducer,
+        crafting: craftingReducer
     }
 })
 

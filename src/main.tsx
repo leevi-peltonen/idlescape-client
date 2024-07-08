@@ -1,3 +1,6 @@
+import '@mantine/core/styles.css'
+import '@mantine/notifications/styles.css';
+import '@mantine/charts/styles.css'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
@@ -6,8 +9,8 @@ import { Notifications } from '@mantine/notifications'
 import { Provider } from 'react-redux'
 import { Toaster } from 'react-hot-toast'
 import store from './store.ts'
-import '@mantine/core/styles.css'
-import '@mantine/notifications/styles.css';
+
+
 
 const theme = createTheme({
 

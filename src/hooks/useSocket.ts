@@ -25,19 +25,12 @@ const useSocket = () => {
         }
     }, [dispatch])
 
-    const addCoins = (amount: number, username: string) => {
-       
-    }
-
-    const removeCoins = (amount: number, username: string) => {
-       
-    }
 
     const gainXP = (skill: string, amount: number, username: string) => {
         socket.emit('gainXP', { skill, amount, username })
     }
 
-    return { addCoins, removeCoins, gainXP }
+    return { gainXP }
 }
 
 export default useSocket

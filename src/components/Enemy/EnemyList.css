@@ -1,0 +1,8 @@
+.enemy-card {
+    cursor: pointer;
+    background-color: #3f3d47;
+}
+
+.enemy-card:hover {
+    background-color: #55548b67;
+}
