@@ -1,11 +1,11 @@
 import { useForm } from "@mantine/form"
 import { Button, Group, TextInput } from "@mantine/core"
-import { loginUserAsync } from "../../features/auth/authThunks"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../../store"
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import CardContainer from "../../components/CardContainer/CardContainer"
+import { loginAsync } from "../../features/auth/authSlice"
 
 const LoginPage = () => {
 
@@ -26,9 +26,7 @@ const LoginPage = () => {
         const username = form.values.username
         const password = form.values.password
 
-        dispatch(loginUserAsync({ username, password }))
-
-        
+        dispatch(loginAsync({username, password}))
     }
 
     useEffect(() => {

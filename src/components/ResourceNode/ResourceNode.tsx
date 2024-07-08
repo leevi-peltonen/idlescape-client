@@ -1,7 +1,6 @@
 import { notifications } from "@mantine/notifications"
 import { Resource } from "../../interfaces/resource"
 import { Card, Text } from '@mantine/core'
-import GetTreeLogo from "../../data/icons/items"
 import { useEffect, useState } from "react"
 
 
@@ -46,7 +45,7 @@ const ResourceNode = ({skill, resource, onAction, active, skillLevel}: ResourceN
                 radius="md"
                 style={{ backgroundColor: 'grey', display:'flex', alignItems:'center', border: '1px solid red'}}
             >
-                {GetTreeLogo(resource.name)}
+                
                 <Text size="lg"><b>{resource.name}</b></Text>
                 <Text size="sm">Level {resource.levelRequirement}</Text>
                 <Text size="sm">{resource.gatherTime}s</Text>
@@ -64,7 +63,7 @@ const ResourceNode = ({skill, resource, onAction, active, skillLevel}: ResourceN
             style={{cursor: 'pointer', backgroundColor: active ? 'lightgreen' : "#8D99AE", display:'flex', alignItems:'center'}}
             
         >
-            {GetTreeLogo(resource.name)}
+            
             <Text size="lg"><b>{resource.name}</b></Text>
             <Text size="sm">Level {resource.levelRequirement}</Text>
             <Text size="sm">{resource.gatherTime}s</Text>

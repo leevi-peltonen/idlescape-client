@@ -1,11 +1,11 @@
 import { useDrag, useDrop } from "react-dnd"
 import { Box, Button, Menu, Modal, NumberInput, Text } from "@mantine/core"
-import { InventoryItem, Item } from "../../interfaces/item"
+import { Item } from "../../interfaces/item"
 import { useState } from "react"
 import { useAppDispatch } from "../../hooks/useRedux"
-import { sellItemAsync } from "../../features/player/playerSlice"
 import { useDisclosure } from "@mantine/hooks"
 import './BankSlot.css'
+import { InventoryItem } from "../../features/game/gameSlice"
 
 interface BankSlotProps {
     id: number
@@ -46,7 +46,9 @@ const BankSlot = ({id, item, inventoryItem, onDropItem, itemLogo}: BankSlotProps
         if(!inventoryItem) {
             return
         }
-        dispatch(sellItemAsync({inventoryItemId: inventoryItem.id, quantity: quantityToSell}))
+        // TODO dispatch only to react state
+        //dispatch(sellItemAsync({inventoryItemId: inventoryItem.id, quantity: quantityToSell}))
+        
         close()
     }
 

@@ -1,13 +1,27 @@
-import { PlayerSkill } from "../interfaces/player";
+import { InventoryItem } from "../features/game/gameSlice";
 
 
-export const getSkillData = (skills: PlayerSkill[] | null, skillName: string): PlayerSkill => {
-    if(!skills) {
-        return { id: 0, level: 1, experience: 0, skill: { id: 0, name: skillName } }
+/**
+ * Finds the first empty slot in the inventory, given the occupied slots and size of 25
+ * @param occupiedSlots 
+ * @returns 
+ */
+export const findFirstEmptySlot = (occupiedSlots: number[]): number | null => {
+    let allSlots = new Set<number>()
+    for (let i = 0; i < 25; i++) {
+        allSlots.add(i);
     }
-    const skill = skills.find(skill => skill.skill.name === skillName)
-    if(skill) {
-        return skill
+
+    let usedSlots = new Set(occupiedSlots);
+    let emptySlots = new Set([...allSlots].filter(x => !usedSlots.has(x)));
+
+    if (emptySlots.size === 0) {
+        return null;
     }
-    return { id: 0, level: 1, experience: 0, skill: { id: 0, name: skillName } } 
+    return Math.min(...emptySlots);
+}
+
+
+export const findExistingItemSlot = (inventory: InventoryItem[], itemName: string) => {
+    return inventory.find(item => item.item.name === itemName)?.slot ?? null 
 }
