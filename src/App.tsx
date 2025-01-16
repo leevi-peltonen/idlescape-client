@@ -15,7 +15,9 @@ import CharactersProtectedRoute from './components/CharactersProtectedRoute/Char
 import ShopPage from './pages/Shop/ShopPage'
 import CombatPage from './pages/Combat/CombatPage'
 import SettingsPage from './pages/Settings/SettingsPage'
-
+import '@mantine/core/styles.css'
+import '@mantine/notifications/styles.css';
+import '@mantine/charts/styles.css'
 
 function App() {
 

@@ -33,7 +33,7 @@ const SalvageOperationsPage = () => {
             className="content-container"
         >
 
-            <Tabs>
+            <Tabs defaultValue="overview">
                 <Tabs.List c="white" mb="md">
                     <Tabs.Tab value="overview" leftSection={<GiInfo style={iconStyle} />}>
                         Overview
